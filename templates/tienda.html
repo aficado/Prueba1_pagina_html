@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if not es_home %}
+    
+    <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">
+        <a href="/" style="text-decoration:none; color:#3483fa;">Inicio</a> > 
+        {{ sub_actual.categoria.nombre }} > 
+        <strong>{{ sub_actual.nombre }}</strong>
+    </p>
+
+    <h2 style="font-weight: 300; margin-bottom: 20px;">{{ sub_actual.nombre }}</h2>
+    
+    {% if productos %}
+        <div class="productos-grid">
+            {% for p in productos %}
+                {% include 'producto_card.html' %} 
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="padding: 40px; text-align: center; background: white; border-radius: 8px;">
+            No hay productos disponibles en esta sección por el momento.
+        </p>
+    {% endif %}
+
+{% else %}
+
+    <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #eee;">
+        <h2 style="margin: 0; font-weight: 300;">Bienvenido a la Tienda</h2>
+        <p style="color: #666;">Selecciona una categoría del menú ☰ o revisa nuestro catálogo completo abajo.</p>
+    </div>
+
+    {% for categoria in categorias %}
+        {% if categoria.subcategorias %}
+            {% for sub in categoria.subcategorias %}
+                {% if sub.productos %}
+                    <div style="margin-bottom: 40px;">
+                        <div style="display: flex; justify-content: space-between; align-items: end; border-bottom: 1px solid #ddd; margin-bottom: 15px; padding-bottom: 5px;">
+                            <h3 style="margin: 0; color: #333;">{{ categoria.nombre }} > {{ sub.nombre }}</h3>
+                            <a href="/categoria/{{ sub.id }}" style="text-decoration: none; font-size: 0.9rem; color: #3483fa;">Ver más</a>
+                        </div>
+                        
+                        <div class="productos-grid">
+                            {% for p in sub.productos %}
+                                {% include 'producto_card.html' %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+{% endif %}
+
+<div class="checkout-section">
+    <h2>📋 Tu Carrito</h2>
+    <div id="lista-carrito"><p>Vacío</p></div>
+    <h3 style="text-align: right;">Total: $<span id="total-carrito">0.00</span></h3>
+    <hr>
+    <form id="form-pedido" onsubmit="enviarPedido(event)" style="display: flex; flex-direction: column; gap: 10px; max-width: 500px;">
+        <input type="text" id="cliente-nombre" required placeholder="Nombre">
+        <input type="text" id="cliente-direccion" required placeholder="Dirección">
+        <input type="tel" id="cliente-telefono" required placeholder="Teléfono">
+        <input type="email" id="cliente-correo" placeholder="Correo (opcional)">
+        <button type="submit" id="btn-confirmar" class="btn-ml-primary">Realizar Pedido</button>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}

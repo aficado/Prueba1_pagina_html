@@ -1,0 +1,20 @@
+<div class="card">
+    <div class="card-image-container">
+        <img src="{{ url_for('static', filename='uploads/' + p.imagen_filename) }}" alt="{{ p.nombre }}">
+    </div>
+    <div class="card-content">
+        <p class="price">
+            <span style="font-size:0.8em; vertical-align:top;">$</span>{{ p.precio|int }}<span style="font-size:0.6em; vertical-align:top;">{{ ("%.2f"|format(p.precio))[-3:] }}</span>
+        </p>
+        <h3>{{ p.nombre }}</h3>
+        
+        {% if p.existencia > 0 %}
+            <p style="font-size: 0.8rem; color: #00a650; margin-bottom: 10px;">Stock disponible</p>
+            <button class="btn-ml-primary" onclick="agregarAlCarrito({{ p.id }}, '{{ p.nombre }}', {{ p.precio }}, {{ p.existencia }})">
+                Agregar
+            </button>
+        {% else %}
+            <p style="font-size: 0.8rem; color: #e74c3c;">Agotado</p>
+        {% endif %}
+    </div>
+</div>

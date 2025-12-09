@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="admin-panel">
+    <h2>🛠️ Panel de Control</h2>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+        
+        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px;">
+            <h3>1. Apartados</h3>
+            <form action="/admin" method="POST" style="margin-bottom: 15px;">
+                <input type="hidden" name="tipo_form" value="categoria">
+                <input type="text" name="nombre_cat" placeholder="Nuevo Apartado (Ej: Ropa)" required>
+                <button type="submit" class="btn-generic" style="margin-top:5px;">Crear</button>
+            </form>
+            
+            <ul style="list-style: none; padding: 0; background: white; border-radius: 4px; border: 1px solid #ddd; max-height: 150px; overflow-y: auto;">
+                {% for c in categorias %}
+                <li style="padding: 8px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+                    {{ c.nombre }}
+                    <a href="/admin/borrar_categoria/{{ c.id }}" onclick="return confirm('¡CUIDADO! Se borrarán todos los productos de este apartado. ¿Seguro?')" style="color: red; text-decoration: none; font-weight: bold;">✕</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div style="background: #fff3e0; padding: 15px; border-radius: 8px;">
+            <h3>2. Sub-Apartados</h3>
+            <form action="/admin" method="POST" style="margin-bottom: 15px;">
+                <input type="hidden" name="tipo_form" value="subcategoria">
+                <select name="categoria_id" required style="width: 100%; padding: 10px; margin-bottom: 5px;">
+                    <option value="" disabled selected>Selecciona Apartado...</option>
+                    {% for c in categorias %}
+                        <option value="{{ c.id }}">{{ c.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" name="nombre_sub" placeholder="Nuevo Sub (Ej: Dama)" required>
+                <button type="submit" class="btn-generic" style="margin-top:5px;">Crear</button>
+            </form>
+
+            <ul style="list-style: none; padding: 0; background: white; border-radius: 4px; border: 1px solid #ddd; max-height: 150px; overflow-y: auto;">
+                {% for s in subcategorias %}
+                <li style="padding: 8px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+                    <span><small style="color:#999">{{ s.categoria.nombre }} ></small> {{ s.nombre }}</span>
+                    <a href="/admin/borrar_subcategoria/{{ s.id }}" onclick="return confirm('Se borrarán los productos de este sub-apartado. ¿Seguro?')" style="color: red; text-decoration: none; font-weight: bold;">✕</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div style="background: #f1f8e9; padding: 20px; border-radius: 8px; border: 1px solid #c5e1a5; margin-bottom: 40px;">
+        <h3>3. Publicar Nuevo Producto</h3>
+        <form action="/admin" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="tipo_form" value="producto">
+            
+            <label>Ubicación del producto:</label>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <select id="cat-selector" onchange="filtrarSubcategorias()" style="flex: 1; padding: 10px;">
+                    <option value="">1. Filtra por Apartado...</option>
+                    {% for c in categorias %}
+                        <option value="{{ c.id }}">{{ c.nombre }}</option>
+                    {% endfor %}
+                </select>
+
+                <select id="sub-selector" name="subcategoria_id" required style="flex: 1; padding: 10px;" disabled>
+                    <option value="">2. Elige Sub-Apartado...</option>
+                    {% for s in subcategorias %}
+                        <option value="{{ s.id }}" data-cat="{{ s.categoria_id }}">{{ s.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <input type="text" name="nombre" placeholder="Nombre Producto" required style="flex: 2;">
+                <input type="number" name="precio" step="0.50" placeholder="$ Precio" required style="flex: 1;">
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <input type="number" name="existencia" placeholder="Stock Inicial" required style="flex: 1;">
+                <input type="file" name="imagen" accept="image/*" style="flex: 2; background: white;">
+            </div>
+
+            <button type="submit" class="btn-ml-primary" style="margin-top: 15px;">Publicar Producto</button>
+        </form>
+    </div>
+
+    <h3>Inventario Global</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>Producto</th>
+                <th>Clasificación</th>
+                <th>Stock</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in productos %}
+            <tr>
+                <td><img src="{{ url_for('static', filename='uploads/' + p.imagen_filename) }}" style="width:40px; height:40px; object-fit:cover;"></td>
+                <td>{{ p.nombre }}</td>
+                <td><small>{{ p.subcategoria.categoria.nombre }} > {{ p.subcategoria.nombre }}</small></td>
+                <td>
+                    <form action="/admin/actualizar_stock/{{ p.id }}" method="POST" style="display:inline;">
+                        <input type="number" name="existencia" value="{{ p.existencia }}" style="width: 50px;">
+                        <button type="submit">💾</button>
+                    </form>
+                </td>
+                <td><a href="/admin/borrar_producto/{{ p.id }}" onclick="return confirm('¿Borrar producto?')" style="color:red;">Borrar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function filtrarSubcategorias() {
+        const catSelect = document.getElementById('cat-selector');
+        const subSelect = document.getElementById('sub-selector');
+        const catId = catSelect.value;
+        const opciones = subSelect.querySelectorAll('option');
+
+        subSelect.disabled = false;
+        subSelect.value = ""; 
+
+        opciones.forEach(op => {
+            if (op.dataset.cat === catId || op.value === "") {
+                op.style.display = "block";
+            } else {
+                op.style.display = "none";
+            }
+        });
+    }
+</script>
+{% endblock %}

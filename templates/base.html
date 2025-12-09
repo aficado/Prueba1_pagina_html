@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Online</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="sidebar-overlay" onclick="toggleMenu()"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span>Departamentos</span>
+            <button class="close-btn" onclick="toggleMenu()">✕</button>
+        </div>
+        <div class="sidebar-menu">
+            
+            <a href="/" style="display:block; padding: 15px 20px; color: #333; text-decoration: none; font-weight: bold; border-bottom: 1px solid #eee; background-color: #fffde7;">
+                🏠 Inicio
+            </a>
+
+            {% for cat in categorias %}
+                {% if cat.subcategorias %}
+                <details>
+                    <summary>{{ cat.nombre }}</summary>
+                    <div class="submenu">
+                        {% for sub in cat.subcategorias %}
+                            <a href="/categoria/{{ sub.id }}">{{ sub.nombre }}</a>
+                        {% endfor %}
+                    </div>
+                </details>
+                {% else %}
+                    <div style="padding: 15px 20px; color: #666;">{{ cat.nombre }} (Vacío)</div>
+                {% endif %}
+            {% endfor %}
+            
+            <div style="margin-top: 20px; border-top: 1px solid #eee;">
+                <a href="/admin" style="display:block; padding: 15px 20px; color: #333; text-decoration: none; font-weight: bold;">⚙️ Panel Admin</a>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+            <a href="/" class="logo">🛍️ Mi Tiendita</a>
+            <div style="flex-grow:1; margin: 0 20px; background:white; padding:8px 15px; border-radius:2px; color:#aaa; font-size:0.9rem; display:none; @media(min-width:600px){display:block;}">
+                Buscar productos...
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
