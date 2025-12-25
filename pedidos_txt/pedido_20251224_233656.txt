@@ -1,0 +1,9 @@
+--- PEDIDO NUEVO ---
+FECHA: 2025-12-24 23:36:56
+CLIENTE: jose | 3131196528
+DIR: manuel santa ana #161 santa elena
+--- ITEMS ---
+1x topper de 1l ($250) = $250
+1x Pantalon de mesclilla caballero ($300) = $300
+TOTAL: 550.00
+------------------

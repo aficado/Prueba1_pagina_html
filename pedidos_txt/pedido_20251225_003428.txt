@@ -1,0 +1,10 @@
+--- PEDIDO NUEVO ---
+FECHA: 2025-12-25 00:34:28
+CLIENTE: Jose luis | 3139287133
+DIR: manuel santa ana #161 santa elena
+--- ITEMS ---
+3x Camisa de caballero roja ($180) = $540
+1x Pantalon de mesclilla caballero ($300) = $300
+1x Silla de madera ($150) = $150
+TOTAL: 990
+------------------

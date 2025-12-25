@@ -1,0 +1,10 @@
+--- PEDIDO NUEVO ---
+FECHA: 2025-12-25 00:34:47
+CLIENTE: drakson | 3131196528
+DIR: san luis potosi
+--- ITEMS ---
+2x Silla de madera ($150) = $300
+1x Camisa de caballero roja ($180) = $180
+1x Pantalon de mesclilla caballero ($300) = $300
+TOTAL: 780
+------------------

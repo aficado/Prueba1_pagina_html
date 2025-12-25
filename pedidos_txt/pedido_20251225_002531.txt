@@ -1,0 +1,8 @@
+--- PEDIDO NUEVO ---
+FECHA: 2025-12-25 00:25:31
+CLIENTE: drakson | 3139287133
+DIR: awdasd
+--- ITEMS ---
+1x topper de 1l ($250) = $250
+TOTAL: 250
+------------------

@@ -1,0 +1,8 @@
+--- PEDIDO NUEVO ---
+FECHA: 2025-12-24 23:47:23
+CLIENTE: jose luis | 3131196528
+DIR: manuel santa ana #161 santa elena
+--- ITEMS ---
+2x topper de 1l ($250) = $500
+TOTAL: 500.00
+------------------

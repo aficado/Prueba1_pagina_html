@@ -1,0 +1,10 @@
+--- PEDIDO NUEVO ---
+FECHA: 2025-12-24 23:41:52
+CLIENTE: pedro | 3139287133
+DIR: san luis potosi
+--- ITEMS ---
+1x Camisa de caballero roja ($180) = $180
+2x Pantalon de mesclilla caballero ($300) = $600
+3x topper de 1l ($250) = $750
+TOTAL: 1530.00
+------------------

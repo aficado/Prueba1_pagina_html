@@ -1,0 +1,8 @@
+--- PEDIDO NUEVO ---
+FECHA: 2025-12-24 23:42:56
+CLIENTE: jose luis | 3139287133
+DIR: manuel santa ana
+--- ITEMS ---
+2x Camisa de caballero roja ($180) = $360
+TOTAL: 360.00
+------------------
